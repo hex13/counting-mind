@@ -1,5 +1,6 @@
 // js13k 2024 entry by Łukasz Lityński
 
+const timeForAnswer = 5000;
 const rnd = (max) => ~~(Math.random() * max);
 
 const equationEl = document.getElementById('equation');
@@ -10,22 +11,36 @@ const goodOrBadEl = document.getElementById('good-or-bad');
 const okEl = document.getElementById('ok');
 
 function generateEquation(result) {
-	let a, b;
+
 	let label;
-	a = rnd(20) + 1;
-	if (a <= result) {
-		b = result - a;
-		label = `${a} + ${b}`;
+	if (Math.random() < 0.3) {
+		const a = rnd(20) + 1;
+		const b = rnd(4) + 2;
+		const aMulB = a * b;
+		let c;
+		if (aMulB <= result) {
+			label = `${a} * ${b} + ${result - aMulB}`;
+		} else {
+			label = `${a} * ${b} - ${aMulB - result}`;
+		}
 	} else {
-		b = a - result;
-		label = `${a} - ${b}`;
+		let a, b;
+		a = rnd(20) + 1;
+		if (a <= result) {
+			b = result - a;
+			label = `${a} + ${b}`;
+		} else {
+			b = a - result;
+			label = `${a} - ${b}`;
+		}
+
 	}
 	return label;
 }
 
 function generateResult() {
 	let number;
-	if (Math.random() < 0.5) {
+	if (Math.random() < 0.4) {
 		number = 13;
 	} else {
 		number = rnd(21);
@@ -79,7 +94,7 @@ function nextChallenge() {
 		nextEquation();
 		autoAnswerTimeout = setTimeout(() => {
 			answer(true);
-		}, 2000);
+		}, timeForAnswer);
 }
 
 nextChallenge();
